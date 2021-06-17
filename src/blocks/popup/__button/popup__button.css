@@ -1,0 +1,35 @@
+.popup__button {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  box-sizing: border-box;
+  border-radius: 2px;
+  border: 0;
+  color: white;
+  font-size: 18px;
+  line-height: 1.22;
+  margin-top: 31px;
+  padding: 14.5px 0;
+  font-weight: normal;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+}
+
+.popup__button:hover {
+  background-color: rgba(0, 0, 0, .8);
+}
+
+.popup__button:disabled {
+  background-color: rgba(0, 0, 0, .2);
+  border: 1px solid rgba(0, 0, 0, .2);
+}
+
+
+@media (max-width: 320px) {
+  .popup__button {
+    font-size: 14px;
+    margin-top: 45px;
+    padding: 11.5px 0;
+  }
+ }
+
