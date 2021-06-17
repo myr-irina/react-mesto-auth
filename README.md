@@ -28,7 +28,7 @@
 
 # Ссылка на проект
 
- https://myr-irina.github.io/mesto/
+ https://myr-irina.github.io/mesto-react/
 
  
 
