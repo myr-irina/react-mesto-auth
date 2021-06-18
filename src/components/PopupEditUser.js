@@ -11,7 +11,7 @@ function PopupEditUser(props) {
       onClose={props.onClose}
     >
       <input
-        class="popup__field-input popup__field-input-name"
+        className="popup__field-input popup__field-input-name"
         id="field-input-name"
         name="name"
         type="text"
@@ -21,11 +21,11 @@ function PopupEditUser(props) {
         maxLength="40"
         required
       />
-      <span class="popup__input-error" id="field-input-name-error">
+      <span className="popup__input-error" id="field-input-name-error">
         Вы пропустили это поле.
       </span>
       <input
-        class="popup__field-input popup__field-input-about"
+        className="popup__field-input popup__field-input-about"
         type="text"
         id="field-input-about"
         name="about"
@@ -35,7 +35,7 @@ function PopupEditUser(props) {
         maxLength="200"
         required
       />
-      <span class="popup__input-error" id="field-input-about-error">
+      <span className="popup__input-error" id="field-input-about-error">
         Вы пропустили это поле.
       </span>
     </PopupWithForm>

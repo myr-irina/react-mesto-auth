@@ -11,10 +11,10 @@ function PopupWithForm(props) {
             alt="кнопка закрытия попапа"
           />
         </button>
-        <form className={`popup__field-form popup__field-form-${props.name}`} noValidate>         
+        <form className={`popup__field-form popup__field-form-${props.name}`} >         
           <h2 className="popup__heading">{props.title}</h2>
           {props.children}
-          <button type="submit" className="popup__button" aria-label="Да">
+          <button type="submit" className="popup__button" >
             {props.buttonText}
           </button>
         </form>

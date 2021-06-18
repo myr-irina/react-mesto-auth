@@ -1,5 +1,5 @@
 import React from "react";
-import api from "../utils/Api";
+import api from "../utils/api";
 import Card from "./Card";
 
 function Main(props) {
@@ -60,7 +60,7 @@ function Main(props) {
         </section>
 
         <section className="elements page__elements">
-          <ul class="elements__list">
+          <ul className="elements__list">
             {cards.map((card) => (
               <Card
                 card={card}                
