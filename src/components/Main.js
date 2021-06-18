@@ -20,7 +20,7 @@ function Main(props) {
   }, []);
 
   return (
-    <body className="page">
+  
       <div className="page__container">
         <section className="profile page__profile">
           <div className="profile__container">
@@ -71,7 +71,7 @@ function Main(props) {
           </ul>
         </section>
       </div>
-    </body>
+  
   );
 }
 
