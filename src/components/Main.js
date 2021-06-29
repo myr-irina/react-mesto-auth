@@ -1,19 +1,16 @@
 import React from "react";
 import api from "../utils/api";
 import Card from "./Card";
+import { CurrentUserContext } from "./contexts/CurrentUserContext";
+
 
 function Main(props) {
-  const [userName, setuserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
   const [cards, setCards] = React.useState([]);
+  const currentUser = React.useContext(CurrentUserContext);
 
   React.useEffect(() => {
-    Promise.all([api.getUserData(), api.getInitialCards()])
-      .then(([userData, initialCards]) => {
-        setuserName(userData.name);
-        setUserDescription(userData.about);
-        setUserAvatar(userData.avatar);
+    api.getInitialCards()
+      .then((initialCards) => {
         setCards(initialCards);
       })
       .catch((err) => console.log(err));
@@ -27,7 +24,7 @@ function Main(props) {
             <div className="profile__avatar-block">
               <img
                 className="profile__avatar"
-                src={userAvatar}
+                src={currentUser.avatar}
                 alt="аватар пользователя"
               />
               <button
@@ -38,7 +35,7 @@ function Main(props) {
 
             <div className="profile__info-block">
               <div className="profile__edit-block">
-                <h1 className="profile__title">{userName}</h1>
+                <h1 className="profile__title">{currentUser.name}</h1>
                 <button
                   type="button"
                   id="show-popup"
@@ -47,7 +44,7 @@ function Main(props) {
                   onClick={props.onEditProfile}
                 />
               </div>
-              <p className="profile__subtitle">{userDescription}</p>
+              <p className="profile__subtitle">{currentUser.about}</p>
             </div>
           </div>
 

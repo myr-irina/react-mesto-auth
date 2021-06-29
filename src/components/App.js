@@ -1,6 +1,4 @@
 import React from "react";
-// // import './App.css';
-
 import Header from "../components/Header";
 import Main from "../components/Main";
 import Footer from "../components/Footer";
@@ -8,13 +6,30 @@ import PopupAddCard from "./PopupAddCard";
 import PopupEditAvatar from "./PopupEditAvatar";
 import PopupEditUser from "./PopupEditUser";
 import ImagePopup from "../components/ImagePopup";
-import PopupWithDelete from '../components/PopupWithDelete'
+import PopupWithDelete from "../components/PopupWithDelete";
+import { CurrentUserContext } from "./contexts/CurrentUserContext";
+import api from "../utils/api";
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({name: '', link: ''});
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({
+    name: "",
+    link: "",
+  });
+  const [currentUser, setCurrentUser] = React.useState({});
+
+  React.useEffect(() => {
+    api
+      .getUserData()
+      .then((userInfo) => {
+        setCurrentUser(userInfo);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -36,12 +51,12 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setSelectedCard({name: '', link: ''});
+    setSelectedCard({ name: "", link: "" });
   }
- 
 
   return (
-    <>     
+    <CurrentUserContext.Provider value={currentUser}>
+      <>
         <div className="page__container">
           <Header />
           <Main
@@ -50,6 +65,7 @@ function App() {
             onAddPlace={handleAddPlaceClick}
             onCardClick={handleCardClick}
           />
+
           <Footer />
           <PopupAddCard isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
           <PopupEditAvatar
@@ -61,9 +77,13 @@ function App() {
             onClose={closeAllPopups}
           />
           <PopupWithDelete />
-          <ImagePopup card={selectedCard !== null && selectedCard} onClose={closeAllPopups} />
-        </div>     
-    </>
+          <ImagePopup
+            card={selectedCard !== null && selectedCard}
+            onClose={closeAllPopups}
+          />
+        </div>
+      </>
+    </CurrentUserContext.Provider>
   );
 }
 
