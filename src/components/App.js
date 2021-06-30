@@ -21,12 +21,16 @@ function App() {
     link: "",
   });
   const [currentUser, setCurrentUser] = React.useState({});
+  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    api
-      .getUserData()
-      .then((userInfo) => {
-        setCurrentUser(userInfo);
+    Promise.all([
+      api.getUserData(),
+      api.getInitialCards()
+    ])    
+      .then(([userInfo, cardInfo]) => {
+        setCurrentUser(userInfo)
+        setCards(cardInfo)
       })
       .catch((err) => console.log(err));
   }, []);
@@ -47,6 +51,17 @@ function App() {
     setSelectedCard(card);
   }
 
+  function handleCardLike(card) {
+    // Снова проверяем, есть ли у карточки лайк, поставленный текущим пользователем
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+    // Отправляем запрос в API и получаем обновлённые данные карточки
+    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+      setCards((cards) => cards.map((c) => (c._id === card._id ? newCard : c)));
+    })
+    .catch((err) => console.log(err))
+  }
+
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -64,6 +79,8 @@ function App() {
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
             onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            cards={cards}
           />
 
           <Footer />
