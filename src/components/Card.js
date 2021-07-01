@@ -28,6 +28,10 @@ function Card(props) {
     props.onCardLike(props.card);
   }
 
+  function handleDeleteClick() {
+    props.onCardDelete(props.card);
+  }
+
 
   return (
     <li className="elements__list-item">
@@ -35,6 +39,7 @@ function Card(props) {
         <button
         className={cardDeleteButtonClassName}
         type="button"
+        onClick={handleDeleteClick}
       ></button>
       <div className="elements__block">
         <h2 className="elements__title">{props.card.name}</h2>

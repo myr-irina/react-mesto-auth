@@ -6,15 +6,6 @@ import { CurrentUserContext } from "./contexts/CurrentUserContext";
 function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
 
-  // React.useEffect(() => {
-  //   api
-  //     .getInitialCards()
-  //     .then((initialCards) => {
-  //       setCards(initialCards);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
-
   return (
     <div className="page__container">
       <section className="profile page__profile">
