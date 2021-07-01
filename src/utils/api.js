@@ -42,6 +42,7 @@ class Api {
     }).then(this._checkResponse);
   }
 
+  
   updateAvatar(link) {
     return fetch(`${this._address}/users/me/avatar`, {
       method: "PATCH",

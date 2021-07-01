@@ -4,7 +4,7 @@ import Main from "../components/Main";
 import Footer from "../components/Footer";
 import PopupAddCard from "./PopupAddCard";
 import PopupEditAvatar from "./PopupEditAvatar";
-import PopupEditUser from "./PopupEditUser";
+import EditProfilePopup from './EditProfilePopup';
 import ImagePopup from "../components/ImagePopup";
 import PopupWithDelete from "../components/PopupWithDelete";
 import { CurrentUserContext } from "./contexts/CurrentUserContext";
@@ -24,13 +24,10 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    Promise.all([
-      api.getUserData(),
-      api.getInitialCards()
-    ])    
+    Promise.all([api.getUserData(), api.getInitialCards()])
       .then(([userInfo, cardInfo]) => {
-        setCurrentUser(userInfo)
-        setCards(cardInfo)
+        setCurrentUser(userInfo);
+        setCards(cardInfo);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -56,17 +53,32 @@ function App() {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards((cards) => cards.map((c) => (c._id === card._id ? newCard : c)));
-    })
-    .catch((err) => console.log(err))
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((cards) =>
+          cards.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch((err) => console.log(err));
   }
 
   function handleCardDelete(card) {
-    api.deleteCard(card._id).then(() => {
-      setCards((cards) => cards.filter(item => item !== card))
-    })
-    .catch((err) => console.log(err))
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((cards) => cards.filter((item) => item !== card));
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleUpdateUser (data) {
+    api.setUserInfo(data)
+      .then(userInfo => {
+        setCurrentUser(userInfo)
+        closeAllPopups()
+      })
+      .catch((err) => console.log(err))
   }
 
   function closeAllPopups() {
@@ -97,9 +109,10 @@ function App() {
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
           />
-          <PopupEditUser
+          <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
           />
           <PopupWithDelete />
           <ImagePopup
