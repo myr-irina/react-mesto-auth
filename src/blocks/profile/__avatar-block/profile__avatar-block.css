@@ -1,7 +1,9 @@
-.profile__avatar-block{
-  display: flex;
+.profile__avatar-block {
   position: relative;
+  display: flex;
   width: 120px;
   height: 120px;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 50%;
 }
-

@@ -43,7 +43,7 @@ class Api {
   }
 
   
-  updateAvatar(link) {
+  updateAvatar(data) {
     return fetch(`${this._address}/users/me/avatar`, {
       method: "PATCH",
       headers: {
@@ -51,7 +51,7 @@ class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        avatar: link,
+        avatar: data.avatar,
       }),
     }).then(this._checkResponse);
   }

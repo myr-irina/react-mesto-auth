@@ -1,7 +1,9 @@
 .profile__avatar-button {
   position: absolute;
-  width: 120px;
-  height: 120px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   border: none;
   opacity: 0;
   background-color: rgba(0, 0, 0, 0);
@@ -10,6 +12,9 @@
   transition: opacity 0.2s ease-in-out;
   background-repeat: no-repeat;
   background-position: center;
+  height: 120px;
+  width: 120px;
+  z-index: 1;
 }
 
 .profile__avatar-button:hover {

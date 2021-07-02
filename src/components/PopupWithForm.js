@@ -4,7 +4,7 @@ import closeIcon from '../images/CloseIcon.svg'
 function PopupWithForm(props) {
   return (
     <div className={`popup popup_type_${props.name} ${props.isOpen ? 'popup_is-opened' : ''}`}>
-      <div className="popup__content">
+      <div className="popup__content" onSubmit={props.onSubmit}>
         <button type="button" className="popup__close" onClick={props.onClose}>
           <img
             src={closeIcon}
