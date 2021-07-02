@@ -7,7 +7,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import ImagePopup from "../components/ImagePopup";
 import PopupWithDelete from "../components/PopupWithDelete";
-import { CurrentUserContext } from "./contexts/CurrentUserContext";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
 
 function App() {
