@@ -26,11 +26,13 @@ function App() {
   React.useEffect(() => {
     Promise.all([api.getUserData(), api.getInitialCards()])
       .then(([userInfo, cardInfo]) => {
-        setCurrentUser(userInfo);
-        setCards(cardInfo);
+        setCurrentUser(userInfo);       
+        setCards(cardInfo);       
       })
       .catch((err) => console.log(err));
   }, []);
+
+
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -41,7 +43,7 @@ function App() {
   }
 
   function handleAddPlaceClick() {
-    setIsAddPlacePopupOpen(true);
+    setIsAddPlacePopupOpen(true);    
   }
 
   function handleCardClick(card) {

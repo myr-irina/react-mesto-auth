@@ -5,6 +5,7 @@ function AddPlacePopup(props) {
   const [title, setTitle] = React.useState('')
   const [link, setLink] = React.useState('')
 
+  
   function handleChangeTitle(e) {
     setTitle(e.target.value)
   }
@@ -19,8 +20,14 @@ function AddPlacePopup(props) {
     props.onAddCard({
       name: title,
       link: link
-    })
+    });
   }
+
+  React.useEffect(() => {
+    setTitle('')
+    setLink('')
+  }, [props.isOpen])
+
 
   return(
     <PopupWithForm
