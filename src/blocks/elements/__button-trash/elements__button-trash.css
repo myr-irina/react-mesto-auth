@@ -6,6 +6,7 @@
   width: 18px;
   height: 19.3px;
   background-image: url(../../../images/Trash.svg);
+  box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
   box-sizing: border-box;
   position: absolute;
   top: 18px;
