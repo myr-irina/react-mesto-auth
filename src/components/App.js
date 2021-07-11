@@ -9,30 +9,36 @@ import ImagePopup from "../components/ImagePopup";
 import PopupWithDelete from "../components/PopupWithDelete";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
+import { Route, Switch, Redirect } from "react-router-dom";
+import Register from "./Register";
+import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
+    React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
+    React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({
     name: "",
     link: "",
   });
-  const [isPopupWithDeleteOpen, setIsPopupWithDeleteOpen] = React.useState(false);
-  const [cardIdWithDelete, setCardIdWithDelete] =React.useState(null);
+  const [isPopupWithDeleteOpen, setIsPopupWithDeleteOpen] =
+    React.useState(false);
+  const [cardIdWithDelete, setCardIdWithDelete] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   React.useEffect(() => {
     Promise.all([api.getUserData(), api.getInitialCards()])
       .then(([userInfo, cardInfo]) => {
-        setCurrentUser(userInfo);       
-        setCards(cardInfo);       
+        setCurrentUser(userInfo);
+        setCards(cardInfo);
       })
       .catch((err) => console.log(err));
   }, []);
-
-
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -43,7 +49,7 @@ function App() {
   }
 
   function handleAddPlaceClick() {
-    setIsAddPlacePopupOpen(true);    
+    setIsAddPlacePopupOpen(true);
   }
 
   function handleCardClick(card) {
@@ -67,10 +73,9 @@ function App() {
 
   function handleCardDelete(card) {
     setIsPopupWithDeleteOpen(true);
-    setCardIdWithDelete(card);    
+    setCardIdWithDelete(card);
   }
 
- 
   function handleUpdateUser(data) {
     api
       .setUserData(data)
@@ -84,7 +89,7 @@ function App() {
   function handleUpdateAvatar(link) {
     api
       .updateAvatar(link)
-        .then((link) => {
+      .then((link) => {
         setCurrentUser(link);
         closeAllPopups();
       })
@@ -92,24 +97,24 @@ function App() {
   }
 
   function handleAddPlaceSubmit(card) {
-    api.createCard(card)
-      .then(newCard => {
-        setCards([newCard, ...cards]);
-        closeAllPopups()
-      })
-      .catch((err) => console.log(err));
-  }
-    
-  function handleDeleteCardConfirm(card) {    
     api
-      .deleteCard(card._id)
-      .then(() => {
-        setCards((cards) => cards.filter((item) => item !== card));
-        closeAllPopups()
+      .createCard(card)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+        closeAllPopups();
       })
       .catch((err) => console.log(err));
   }
 
+  function handleDeleteCardConfirm(card) {
+    api
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((cards) => cards.filter((item) => item !== card));
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err));
+  }
 
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
@@ -124,18 +129,39 @@ function App() {
       <>
         <div className="page__container">
           <Header />
-          <Main
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            cards={cards}
-          />
+
+          <Switch>
+            <ProtectedRoute
+              exact
+              path="/"
+              loggedIn={loggedIn}
+              onEditAvatar={handleEditAvatarClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+              cards={cards}
+              component={Main}
+            />
+
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route>
+              {loggedIn ? <Redirect to="/" /> : <Redirect to="/login" />}
+            </Route>
+          </Switch>
 
           <Footer />
-          <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddCard={handleAddPlaceSubmit} />
+          <AddPlacePopup
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+            onAddCard={handleAddPlaceSubmit}
+          />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
@@ -146,7 +172,12 @@ function App() {
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
           />
-          <PopupWithDelete isOpen={isPopupWithDeleteOpen} onclose={closeAllPopups} onDeleteCardConfirm={handleDeleteCardConfirm} cardId={cardIdWithDelete} />
+          <PopupWithDelete
+            isOpen={isPopupWithDeleteOpen}
+            onclose={closeAllPopups}
+            onDeleteCardConfirm={handleDeleteCardConfirm}
+            cardId={cardIdWithDelete}
+          />
           <ImagePopup
             card={selectedCard !== null && selectedCard}
             onClose={closeAllPopups}
