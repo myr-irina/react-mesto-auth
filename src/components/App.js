@@ -145,14 +145,14 @@ function App() {
               component={Main}
             />
 
-            <Route path="/login">
+            <Route path="/sign-in">
               <Login />
             </Route>
-            <Route path="/register">
+            <Route path="/sign-up">
               <Register />
             </Route>
             <Route>
-              {loggedIn ? <Redirect to="/" /> : <Redirect to="/login" />}
+              {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
             </Route>
           </Switch>
 
