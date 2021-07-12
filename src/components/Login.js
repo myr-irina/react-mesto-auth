@@ -16,12 +16,12 @@ function Login() {
   // }
 
   return (
-    <section className="login">
-      <h2 className="login__title">Вход</h2>
-      <form className="login__form">
+    <section className="auth">
+      <h2 className="auth__title">Вход</h2>
+      <form className="auth__form">
         <input
           onChange={handleEmailChange}
-          className="login__form-input"
+          className="auth__form-input"
           placeholder="Email"
           name="email"
           type="email"
@@ -30,7 +30,7 @@ function Login() {
         ></input>
         <input
           onChange={handlePasswordChange}
-          className="login__form-input"
+          className="auth__form-input"
           placeholder="Пароль"
           name="password"
           type="text"
@@ -38,7 +38,7 @@ function Login() {
           value={password || ""}
         ></input>
 
-        <button className="login__form-submit-btn" type="submit">
+        <button className="auth__form-submit-btn" type="submit">
           Войти
         </button>
       </form>

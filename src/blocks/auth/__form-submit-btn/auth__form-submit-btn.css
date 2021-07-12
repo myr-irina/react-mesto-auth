@@ -1,4 +1,4 @@
-.login__form-submit-btn {
+.auth__form-submit-btn {
   width: 358px;
   height: 50px;
   background: #ffffff;
@@ -12,7 +12,7 @@
 }
 
 @media screen and (max-width: 510px) {
-  .login__form-submit-btn {
+  .auth__form-submit-btn {
     width: 260px;
     height: 46px;
     font-size: 16px;

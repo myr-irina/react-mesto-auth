@@ -1,4 +1,4 @@
-.login__form {
+.auth__form {
   display: flex;
   flex-direction: column;
   justify-content: center; 

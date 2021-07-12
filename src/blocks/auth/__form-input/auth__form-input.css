@@ -1,4 +1,4 @@
-.login__form-input {
+.auth__form-input {
   max-width: 358px;
   height: 27px;
   margin-top: 30px;
@@ -11,6 +11,6 @@
   color: #cccccc;
 }
 
-.login__form-input:focus {
+.auth__form-input:focus {
   outline: none;
 }
