@@ -13,6 +13,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
 import ProtectedRoute from "./ProtectedRoute";
+import InfoToolTip from "./InfoToolTip";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
@@ -30,6 +31,8 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] = React.useState(false);
+  const [registerSuccess, setRegisterSuccess] = React.useState(false);
 
   React.useEffect(() => {
     Promise.all([api.getUserData(), api.getInitialCards()])
@@ -116,14 +119,25 @@ function App() {
       .catch((err) => console.log(err));
   }
 
+  function handleToolTipClick() {
+    setIsInfoToolTipPopupOpen(true)
+  }
+
+  function isSuccess(data) {
+    setRegisterSuccess(data);
+  }
+
+  
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard({ name: "", link: "" });
     setIsPopupWithDeleteOpen(false);
+    setIsInfoToolTipPopupOpen(false);
   }
 
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <>
@@ -182,6 +196,11 @@ function App() {
             card={selectedCard !== null && selectedCard}
             onClose={closeAllPopups}
           />
+          <InfoToolTip
+           isOpen={isInfoToolTipPopupOpen}
+           onClose={closeAllPopups}
+           isSuccess={registerSuccess}
+           />
         </div>
       </>
     </CurrentUserContext.Provider>

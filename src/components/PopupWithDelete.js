@@ -3,7 +3,8 @@ import PopupWithForm from '../components/PopupWithForm'
 
 function PopupWithDelete(props) {
   function handleSubmit (e) {
-    e.preventDefault();   
+    e.preventDefault();
+    props.onDeleteCardConfirm(props.cardId);
   }
 
   return (
