@@ -3,20 +3,20 @@ import FailIcon from "../images/FailIcon.svg";
 import closeIcon from "../images/CloseIcon.svg";
 import React from "react";
 
-function InfoToolTip({ isOpen, isRegSuccess, onClose }) {
+function InfoToolTip(props) {
   return (
     <div
-      className={`popup popup_type_tooltip ${isOpen ? "popup_is-opened" : ""}`}
+      className={`popup popup_type_tooltip ${props.isOpen ? "popup_is-opened" : ""}`}
     >
       <div className="popup__content">
-        {isRegSuccess ? (
+        {props.isSuccess ? (
           <>
             <img
               src={`${SuccessIcon}`}
               alt="Регистрация прошла успешно."
-              className="popup__tooltip-image"
+              className="popup__tooltip_image"
             />
-            <p className="popup__tooltip-message">
+            <p className="popup__tooltip_message">
               Вы успешно зарегистрировались!
             </p>
           </>
@@ -25,15 +25,15 @@ function InfoToolTip({ isOpen, isRegSuccess, onClose }) {
             <img
               src={`${FailIcon}`}
               alt="Регистрация не была выполнена."
-              className="popup__tooltip-image"
+              className="popup__tooltip_image"
             />
-            <p className="popup__tooltip-message">
+            <p className="popup__tooltip_message">
               Что-то пошло не так. Попробуйте ещё раз!
             </p>
           </>
         )}
 
-        <button type="button" className="popup__close" onClick={onClose}>
+        <button type="button" className="popup__close" onClick={props.onClose}>
           <img src={closeIcon} alt="кнопка закрытия попапа" />
         </button>
       </div>

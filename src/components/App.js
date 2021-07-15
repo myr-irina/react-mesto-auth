@@ -9,10 +9,11 @@ import ImagePopup from "../components/ImagePopup";
 import PopupWithDelete from "../components/PopupWithDelete";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
 import Register from "./Register";
 import Login from "./Login";
-import ProtectedRoute from "./ProtectedRoute";
+import * as auth from "../utils/auth";
 import InfoToolTip from "./InfoToolTip";
 
 function App() {
@@ -30,9 +31,12 @@ function App() {
   const [cardIdWithDelete, setCardIdWithDelete] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
-  const [loggedIn, setLoggedIn] = React.useState(false);
-  const [isInfoToolTipPopupOpen, setIsInfoToolTipPopupOpen] = React.useState(false);
-  const [registerSuccess, setRegisterSuccess] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const history = useHistory();
+  const [isInfoToolTipPopupOpen, setInfoToolTipPopupOpen] =
+    React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
 
   React.useEffect(() => {
     Promise.all([api.getUserData(), api.getInitialCards()])
@@ -42,6 +46,27 @@ function App() {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  //Хук для проверки токена при каждом монтировании компонента App
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    //проверим существует ли токен в хранилище браузера localStorage    
+    if (jwt) {
+      auth
+        .checkToken(jwt)        
+        .then((res) => {          
+          setIsLoggedIn(true);
+          setEmail(res.data.email);
+          history.push("/");
+        })
+        .catch((err) => {
+          if (err.status === 401) {
+            console.log("401 — Токен не передан или передан не в том формате");
+          }
+          console.log("401 — Переданный токен некорректен");
+        });
+    }
+  }, [history]);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -62,7 +87,6 @@ function App() {
   function handleCardLike(card) {
     // Снова проверяем, есть ли у карточки лайк, поставленный текущим пользователем
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
-
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api
       .changeLikeCardStatus(card._id, !isLiked)
@@ -119,36 +143,65 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  function handleToolTipClick() {
-    setIsInfoToolTipPopupOpen(true)
-  }
-
-  function isSuccess(data) {
-    setRegisterSuccess(data);
-  }
-
-  
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setSelectedCard({ name: "", link: "" });
     setIsPopupWithDeleteOpen(false);
-    setIsInfoToolTipPopupOpen(false);
+    setInfoToolTipPopupOpen(false);
   }
 
-  
+  function handleRegisterSubmit(email, password) {
+    auth
+      .register(email, password)
+      .then((res) => {
+        setInfoToolTipPopupOpen(true);
+        setIsSuccess(true);
+        history.push("/sign-in");
+      })
+      .catch((err) => {
+        if (err.status === 400) {
+          console.log("400 - некорректно заполнено одно из полей");
+        }
+      });
+  }
+
+  function handleLoginSubmit(email, password) {
+    auth
+      .login(email, password)
+      .then((res) => {
+        localStorage.setItem("jwt", res.token);
+        setIsLoggedIn(true);
+        setEmail(email);
+        history.push("/");
+      })
+      .catch((err) => {
+        if (err.status === 400) {
+          console.log("400 - не передано одно из полей");
+        } else if (err.status === 401) {
+          console.log("401 - пользователь с email не найден");
+        }
+      });
+  }
+
+  function handleSignOut() {
+    localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+    history.push("/sign-in");
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <>
         <div className="page__container">
-          <Header />
+          <Header email={email} onSignOut={handleSignOut} />
 
           <Switch>
             <ProtectedRoute
               exact
               path="/"
-              loggedIn={loggedIn}
+              isLoggedIn={isLoggedIn}
               onEditAvatar={handleEditAvatarClick}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
@@ -158,19 +211,19 @@ function App() {
               cards={cards}
               component={Main}
             />
-
             <Route path="/sign-in">
-              <Login />
+              <Login onLogin={handleLoginSubmit} />
             </Route>
             <Route path="/sign-up">
-              <Register />
+              <Register onRegister={handleRegisterSubmit} />
             </Route>
             <Route>
-              {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+              {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
             </Route>
           </Switch>
 
-          <Footer />
+          {isLoggedIn && <Footer />}
+
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
@@ -196,12 +249,12 @@ function App() {
             card={selectedCard !== null && selectedCard}
             onClose={closeAllPopups}
           />
-          <InfoToolTip
-           isOpen={isInfoToolTipPopupOpen}
-           onClose={closeAllPopups}
-           isSuccess={registerSuccess}
-           />
         </div>
+        <InfoToolTip
+          isOpen={isInfoToolTipPopupOpen}
+          onClose={closeAllPopups}
+          isSuccess={isSuccess}
+        />
       </>
     </CurrentUserContext.Provider>
   );
