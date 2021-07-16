@@ -164,6 +164,8 @@ function App() {
         if (err.status === 400) {
           console.log("400 - некорректно заполнено одно из полей");
         }
+        setInfoToolTipPopupOpen(true);
+        setIsSuccess(false);
       });
   }
 

@@ -29,6 +29,7 @@ function Login(props) {
             type="email"
             required
             value={email || ""}
+            autoComplete="off"
           ></input>
           <input
             onChange={handlePasswordChange}
@@ -38,6 +39,7 @@ function Login(props) {
             type="password"
             required
             value={password || ""}
+            autoComplete="off"
           ></input>
 
           <button className="auth__form-submit-btn" type="submit">

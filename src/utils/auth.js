@@ -1,5 +1,12 @@
 const BASE_URL = "https://auth.nomoreparties.co";
 
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`${res.status}`);
+}
+
 export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
@@ -12,13 +19,7 @@ export const register = (email, password) => {
       password: password,
     }),
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Что-то пошло не так при регистрации ${res.status}`);
-    })
-    .catch((err) => console.log(err));
+    .then(checkResponse)
 };
 
 export const login = (email, password) => {
@@ -32,19 +33,13 @@ export const login = (email, password) => {
       password: password,
     }),
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Что-то пошло не так при входе ${res.status}`);
-    })
+    .then(checkResponse)
     .then((data) => {
       if (data.token) {
         localStorage.setItem("jwt", data.token);
         return data;
       }
-    })
-    .catch((err) => console.log(err));
+    })  
 };
 
 export const checkToken = (jwt) => {
@@ -55,11 +50,5 @@ export const checkToken = (jwt) => {
       Authorization: `Bearer ${jwt}`,
     },
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Что-то пошло не так при проверке токена ${res.status}`);
-    })
-    .catch((err) => console.log(err));
+    .then(checkResponse)
 };

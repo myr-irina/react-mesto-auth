@@ -1,16 +1,17 @@
-import React from "react"
-import PopupWithForm from "./PopupWithForm"
-
+import React from "react";
+import PopupWithForm from "./PopupWithForm";
 
 function EditAvatarPopup(props) {
-  const avatarRef = React.useRef('');
+  const avatarRef = React.useRef("");
 
   function handleSubmit(e) {
     e.preventDefault();
-  
+
     props.onUpdateAvatar({
-      avatar: avatarRef.current.value
+      avatar: avatarRef.current.value,
     });
+    props.onClose();
+    avatarRef.current.value = '';
   }
 
   return (
@@ -20,7 +21,7 @@ function EditAvatarPopup(props) {
       buttonText="Сохранить"
       isOpen={props.isOpen}
       onClose={props.onClose}
-      onSubmit={handleSubmit} 
+      onSubmit={handleSubmit}
     >
       <input
         ref={avatarRef}
@@ -30,14 +31,13 @@ function EditAvatarPopup(props) {
         autoComplete="off"
         id="field-input-avatar"
         placeholder="Ссылка на картинку"
-        required      
+        required
       />
       <span className="popup__input-error" id="field-input-avatar-error">
         Введите ссылку.
       </span>
     </PopupWithForm>
   );
-
 }
 
-export default EditAvatarPopup
+export default EditAvatarPopup;

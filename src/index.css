@@ -65,6 +65,7 @@
 @import url(../src/blocks/header/__email/header__email.css);
 @import url(../src/blocks/auth/__signup/_text/auth__signup_text.css);
 @import url(../src/blocks/auth/__signup/_link/auth__signup_link.css);
+@import url(../src/blocks/auth/__form-submit-btn/_size/auth__form-submit-btn_size.css);
 
 
 

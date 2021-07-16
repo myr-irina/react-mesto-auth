@@ -30,6 +30,7 @@ function Register(props) {
           required
           value={email || ""}
           onChange={handleEmailChange}
+          autoComplete="off"
         ></input>
         <input
           className="auth__form-input"
@@ -39,9 +40,10 @@ function Register(props) {
           required
           value={password || ""}
           onChange={handlePasswordChange}
+          autoComplete="off"
         ></input>
 
-        <button className="auth__form-submit-btn" type="submit">
+        <button className="auth__form-submit-btn auth__form-submit-btn_size" type="submit">
           Зарегистрироваться
         </button>
         <div className="auth__signup">
