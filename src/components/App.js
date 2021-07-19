@@ -37,24 +37,54 @@ function App() {
   const [isInfoToolTipPopupOpen, setInfoToolTipPopupOpen] =
     React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
+    setIsLoading(true);
+
     Promise.all([api.getUserData(), api.getInitialCards()])
       .then(([userInfo, cardInfo]) => {
         setCurrentUser(userInfo);
         setCards(cardInfo);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  React.useEffect(() => {
+    function handleEscClose(evt) {
+      if (evt.key === "Escape") {
+        closeAllPopups();
+      }
+    }
+    document.addEventListener("keydown", handleEscClose);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    function handleOverlayClose(evt) {
+      if (evt.target.classList.contains("popup_is-opened")) {
+        closeAllPopups();
+      }
+    }
+    document.addEventListener("click", handleOverlayClose);
+
+    return () => {
+      document.removeEventListener("click", handleOverlayClose);
+    };
   }, []);
 
   //Хук для проверки токена при каждом монтировании компонента App
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-    //проверим существует ли токен в хранилище браузера localStorage    
+    //проверим существует ли токен в хранилище браузера localStorage
     if (jwt) {
       auth
-        .checkToken(jwt)        
-        .then((res) => {          
+        .checkToken(jwt)
+        .then((res) => {
           setIsLoggedIn(true);
           setEmail(res.data.email);
           history.push("/");
@@ -212,6 +242,7 @@ function App() {
               onCardDelete={handleCardDelete}
               cards={cards}
               component={Main}
+              isLoading={isLoading}
             />
             <Route path="/sign-in">
               <Login onLogin={handleLoginSubmit} />

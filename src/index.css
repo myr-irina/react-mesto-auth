@@ -66,7 +66,9 @@
 @import url(../src/blocks/auth/__signup/_text/auth__signup_text.css);
 @import url(../src/blocks/auth/__signup/_link/auth__signup_link.css);
 @import url(../src/blocks/auth/__form-submit-btn/_size/auth__form-submit-btn_size.css);
-
+@import url(../src/blocks/loader/loader.css);
+@import url(../src/blocks/page/__profile/_hidden/page__profile_hidden.css);
+@import url(../src/blocks/loader-circle/loader-circle.css);
 
 
 

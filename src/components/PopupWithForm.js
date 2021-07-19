@@ -1,6 +1,8 @@
 import React from 'react'
 import closeIcon from '../images/CloseIcon.svg'
 
+
+
 function PopupWithForm(props) {
   return (
     <div className={`popup popup_type_${props.name} ${props.isOpen ? 'popup_is-opened' : ''}`}>
@@ -15,7 +17,7 @@ function PopupWithForm(props) {
           <h2 className="popup__heading">{props.title}</h2>
           {props.children}
           <button type="submit" className="popup__button" >
-            {props.buttonText}
+            {props.buttonText}          
           </button>
         </form>
       </div>

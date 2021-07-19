@@ -1,13 +1,16 @@
 import React from "react";
 import Card from "./Card";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import Loader from "./Loader";
 
 function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
 
   return (
     <div className="page__container">
-      <section className="profile page__profile">
+      {props.isLoading && (<Loader />)}
+
+      <section className={`profile page__profile ${props.isLoading && "page__profile_hidden"}`}>
         <div className="profile__container">
           <div className="profile__avatar-block">
             <img

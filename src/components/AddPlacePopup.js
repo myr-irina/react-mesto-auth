@@ -37,6 +37,7 @@ function AddPlacePopup(props) {
     isOpen={props.isOpen}
     onClose={props.onClose}
     onSubmit={handleSubmit}
+    isDataLoading={props.isDataLoading}
   >
     <input
       className="popup__field-input popup__field-input-description"
