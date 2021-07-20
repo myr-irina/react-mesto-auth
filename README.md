@@ -28,4 +28,4 @@ npm i # установить все пакеты
 npm start # собрать проект
 
 ### Ссылка на проект
- https://myr-irina.github.io/mesto-react-auth/
+http://myr-irina.github.io/react-mesto-auth
