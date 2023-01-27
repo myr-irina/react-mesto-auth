@@ -38,16 +38,18 @@ function Header(props) {
             </div>
           </Route>
         </Switch>
-        <button
-          className="header__burger"
-          type="button"
-          onClick={props.handleClickOpenMobileMenu}
-          style={{
-            backgroundImage: `url(${
-              props.isMobileMenuOpen ? closeMenuIcon : burgerMenu
-            })`,
-          }}
-        ></button>
+        {props.isLoggedIn && (
+          <button
+            className="header__burger"
+            type="button"
+            onClick={props.handleClickOpenMobileMenu}
+            style={{
+              backgroundImage: `url(${
+                props.isMobileMenuOpen ? closeMenuIcon : burgerMenu
+              })`,
+            }}
+          ></button>
+        )}
       </header>
     </div>
   );

@@ -11,6 +11,7 @@
   background-color: #ffffff;
   border-radius: 10px;
   padding: 34px 36px 37px 36px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 480px) {
@@ -22,13 +23,15 @@
 @media (max-width: 391px) {
   .popup__content {
     max-width: 300px;
+    font-size: 20px;
+    line-height: 24px;
   }
 }
 
 @media (max-width: 320px) {
   .popup__content {
-    max-width: 282px;
-    max-height: 322px;
-    padding: 25px 22px 25px 22px;
+    max-width: 280px;
+    max-height: 308px;
+    padding: 50px 18px;
   }
 }

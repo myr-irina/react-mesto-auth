@@ -236,6 +236,7 @@ function App() {
             onSignOut={handleSignOut}
             isMobileMenuOpen={isMobileMenuOpen}
             handleClickOpenMobileMenu={handleClickOpenMobileMenu}
+            isLoggedIn={isLoggedIn}
           />
 
           <Switch>
