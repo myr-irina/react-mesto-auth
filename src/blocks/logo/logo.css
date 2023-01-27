@@ -1,5 +1,4 @@
 .logo {
-  margin-bottom: 41px;
   display: block;
   background-image: url(./../../images/logo.svg);
   background-repeat: no-repeat;
@@ -15,11 +14,16 @@
   opacity: 0.6;
 }
 
+@media screen and (max-width: 520px) {
+  .logo {
+    height: 26px;
+    width: 110px;
+  }
+}
 
 @media screen and (max-width: 320px) {
   .logo {
-    height: 24.4px;
-    width: 103.74px;
-    margin: 0 0 31.6px 27px;
+    height: 24px;
+    width: 104px;
   }
 }

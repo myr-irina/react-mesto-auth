@@ -68,9 +68,8 @@
 @import url(../src/blocks/auth/__form-submit-btn/_size/auth__form-submit-btn_size.css);
 @import url(../src/blocks/loader/loader.css);
 @import url(../src/blocks/page/__profile/_hidden/page__profile_hidden.css);
-
-
-
-
-
-
+@import url(../src/blocks//header/__burger/header__burger.css);
+@import url(../src/blocks/mobile-menu//mobile-menu.css);
+@import url(../src/blocks/mobile-menu/__email/mobile-menu__email.css);
+@import url(../src/blocks/mobile-menu/__exit/mobile-menu__exit.css);
+@import url(../src/blocks/mobile-menu/_opened/mobile-menu_opened.css);

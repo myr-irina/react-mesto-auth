@@ -1,20 +1,20 @@
-import React from "react";
-import Header from "../components/Header";
-import Main from "../components/Main";
-import Footer from "../components/Footer";
-import AddPlacePopup from "./AddPlacePopup";
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
-import ImagePopup from "../components/ImagePopup";
-import PopupWithDelete from "../components/PopupWithDelete";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import api from "../utils/api";
-import { Route, Switch, Redirect, useHistory } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
-import Register from "./Register";
-import Login from "./Login";
-import * as auth from "../utils/auth";
-import InfoToolTip from "./InfoToolTip";
+import React from 'react';
+import Header from '../components/Header';
+import Main from '../components/Main';
+import Footer from '../components/Footer';
+import AddPlacePopup from './AddPlacePopup';
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
+import ImagePopup from '../components/ImagePopup';
+import PopupWithDelete from '../components/PopupWithDelete';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import api from '../utils/api';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import Register from './Register';
+import Login from './Login';
+import * as auth from '../utils/auth';
+import InfoToolTip from './InfoToolTip';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] =
@@ -23,8 +23,8 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({
-    name: "",
-    link: "",
+    name: '',
+    link: '',
   });
   const [isPopupWithDeleteOpen, setIsPopupWithDeleteOpen] =
     React.useState(false);
@@ -32,12 +32,13 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState('');
   const history = useHistory();
   const [isInfoToolTipPopupOpen, setInfoToolTipPopupOpen] =
     React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -47,53 +48,52 @@ function App() {
         setCurrentUser(userInfo);
         setCards(cardInfo);
       })
-      .catch((err) => console.log(err))
+      .catch(err => console.log(err))
       .finally(() => setIsLoading(false));
   }, []);
 
   React.useEffect(() => {
     function handleEscClose(evt) {
-      if (evt.key === "Escape") {
+      if (evt.key === 'Escape') {
         closeAllPopups();
       }
     }
-    document.addEventListener("keydown", handleEscClose);
+    document.addEventListener('keydown', handleEscClose);
 
     return () => {
-      document.removeEventListener("keydown", handleEscClose);
+      document.removeEventListener('keydown', handleEscClose);
     };
   }, []);
 
   React.useEffect(() => {
     function handleOverlayClose(evt) {
-      if (evt.target.classList.contains("popup_is-opened")) {
+      if (evt.target.classList.contains('popup_is-opened')) {
         closeAllPopups();
       }
     }
-    document.addEventListener("click", handleOverlayClose);
+    document.addEventListener('click', handleOverlayClose);
 
     return () => {
-      document.removeEventListener("click", handleOverlayClose);
+      document.removeEventListener('click', handleOverlayClose);
     };
   }, []);
 
-  //Хук для проверки токена при каждом монтировании компонента App
   React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    //проверим существует ли токен в хранилище браузера localStorage
+    const jwt = localStorage.getItem('jwt');
+
     if (jwt) {
       auth
         .checkToken(jwt)
-        .then((res) => {
+        .then(res => {
           setIsLoggedIn(true);
           setEmail(res.data.email);
-          history.push("/");
+          history.push('/');
         })
-        .catch((err) => {
+        .catch(err => {
           if (err.status === 401) {
-            console.log("401 — Токен не передан или передан не в том формате");
+            console.log('401 — Токен не передан или передан не в том формате');
           }
-          console.log("401 — Переданный токен некорректен");
+          console.log('401 — Переданный токен некорректен');
         });
     }
   }, [history]);
@@ -115,17 +115,13 @@ function App() {
   }
 
   function handleCardLike(card) {
-    // Снова проверяем, есть ли у карточки лайк, поставленный текущим пользователем
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    // Отправляем запрос в API и получаем обновлённые данные карточки
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
     api
       .changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((cards) =>
-          cards.map((c) => (c._id === card._id ? newCard : c))
-        );
+      .then(newCard => {
+        setCards(cards => cards.map(c => (c._id === card._id ? newCard : c)));
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }
 
   function handleCardDelete(card) {
@@ -136,48 +132,48 @@ function App() {
   function handleUpdateUser(data) {
     api
       .setUserData(data)
-      .then((userInfo) => {
+      .then(userInfo => {
         setCurrentUser(userInfo);
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }
 
   function handleUpdateAvatar(link) {
     api
       .updateAvatar(link)
-      .then((link) => {
+      .then(link => {
         setCurrentUser(link);
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }
 
   function handleAddPlaceSubmit(card) {
     api
       .createCard(card)
-      .then((newCard) => {
+      .then(newCard => {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }
 
   function handleDeleteCardConfirm(card) {
     api
       .deleteCard(card._id)
       .then(() => {
-        setCards((cards) => cards.filter((item) => item !== card));
+        setCards(cards => cards.filter(item => item !== card));
         closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }
 
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
-    setSelectedCard({ name: "", link: "" });
+    setSelectedCard({ name: '', link: '' });
     setIsPopupWithDeleteOpen(false);
     setInfoToolTipPopupOpen(false);
   }
@@ -185,14 +181,14 @@ function App() {
   function handleRegisterSubmit(email, password) {
     auth
       .register(email, password)
-      .then((res) => {
+      .then(res => {
         setInfoToolTipPopupOpen(true);
         setIsSuccess(true);
-        history.push("/sign-in");
+        history.push('/sign-in');
       })
-      .catch((err) => {
+      .catch(err => {
         if (err.status === 400) {
-          console.log("400 - некорректно заполнено одно из полей");
+          console.log('400 - некорректно заполнено одно из полей');
         }
         setInfoToolTipPopupOpen(true);
         setIsSuccess(false);
@@ -202,32 +198,45 @@ function App() {
   function handleLoginSubmit(email, password) {
     auth
       .login(email, password)
-      .then((res) => {
-        localStorage.setItem("jwt", res.token);
+      .then(res => {
+        localStorage.setItem('jwt', res.token);
         setIsLoggedIn(true);
         setEmail(email);
-        history.push("/");
+        history.push('/');
       })
-      .catch((err) => {
+      .catch(err => {
         if (err.status === 400) {
-          console.log("400 - не передано одно из полей");
+          console.log('400 - не передано одно из полей');
         } else if (err.status === 401) {
-          console.log("401 - пользователь с email не найден");
+          console.log('401 - пользователь с email не найден');
         }
       });
   }
 
   function handleSignOut() {
-    localStorage.removeItem("jwt");
+    localStorage.removeItem('jwt');
     setIsLoggedIn(false);
-    history.push("/sign-in");
+    setIsMobileMenuOpen(false);
+    history.push('/sign-in');
+    setIsMobileMenuOpen(false);
+  }
+
+  function handleClickOpenMobileMenu() {
+    if (isLoggedIn) {
+      setIsMobileMenuOpen(!isMobileMenuOpen);
+    }
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <>
         <div className="page__container">
-          <Header email={email} onSignOut={handleSignOut} />
+          <Header
+            email={email}
+            onSignOut={handleSignOut}
+            isMobileMenuOpen={isMobileMenuOpen}
+            handleClickOpenMobileMenu={handleClickOpenMobileMenu}
+          />
 
           <Switch>
             <ProtectedRoute

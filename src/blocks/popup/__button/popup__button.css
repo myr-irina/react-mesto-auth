@@ -16,20 +16,18 @@
 }
 
 .popup__button:hover {
-  background-color: rgba(0, 0, 0, .8);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .popup__button:disabled {
-  background-color: rgba(0, 0, 0, .2);
-  border: 1px solid rgba(0, 0, 0, .2);
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-
-@media (max-width: 320px) {
+@media (max-width: 480px) {
   .popup__button {
     font-size: 14px;
-    margin-top: 45px;
+    margin-top: 20px;
     padding: 11.5px 0;
   }
- }
-
+}

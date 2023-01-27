@@ -1,16 +1,21 @@
-import React from "react";
-import Card from "./Card";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import Loader from "./Loader";
+import React from 'react';
+import Card from './Card';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import Loader from './Loader';
 
 function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
 
   return (
-    <div className="page__container">
-      {props.isLoading && (<Loader />)}
+    // <div className="page__container">
+    <>
+      {props.isLoading && <Loader />}
 
-      <section className={`profile page__profile ${props.isLoading && "page__profile_hidden"}`}>
+      <section
+        className={`profile page__profile ${
+          props.isLoading && 'page__profile_hidden'
+        }`}
+      >
         <div className="profile__container">
           <div className="profile__avatar-block">
             <img
@@ -49,12 +54,19 @@ function Main(props) {
 
       <section className="elements page__elements">
         <ul className="elements__list">
-          {props.cards.map((card) => (            
-             <Card card={card} key={card._id} onCardClick={props.onCardClick} onCardLike={props.onCardLike} onCardDelete={props.onCardDelete} />
-            ))}
+          {props.cards.map(card => (
+            <Card
+              card={card}
+              key={card._id}
+              onCardClick={props.onCardClick}
+              onCardLike={props.onCardLike}
+              onCardDelete={props.onCardDelete}
+            />
+          ))}
         </ul>
       </section>
-    </div>
+    </>
+    // </div>
   );
 }
 

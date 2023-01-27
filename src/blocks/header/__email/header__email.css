@@ -6,3 +6,10 @@
   text-align: right;
   color: #ffffff;
 }
+
+@media (max-width: 580px) {
+  .header__email {
+    font-size: 15px;
+    line-height: 20px;
+  }
+}

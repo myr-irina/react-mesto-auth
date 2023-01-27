@@ -7,9 +7,3 @@
   position: relative;
   overflow: hidden;
 }
-
-/* @media (max-width: 320px) {
-  .elements__list-item {
-    max-height: none;
-  }
-} */

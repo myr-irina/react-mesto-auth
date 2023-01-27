@@ -4,6 +4,19 @@
   justify-content: center;
   flex-direction: row;
   gap: 24px;
-  margin-bottom: 46px;
   padding: 0px;
+}
+
+@media (max-width: 580px) {
+  .header__user-info {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .header__user-info {
+    font-size: 14px;
+    line-height: 17px;
+    display: none;
+  }
 }
